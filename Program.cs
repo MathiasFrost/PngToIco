@@ -1,10 +1,9 @@
 ﻿using System.Drawing;
-using System.Drawing.Imaging;
 
 if (args.Length == 0)
 {
     Console.WriteLine("No file path provided.");
-    Console.WriteLine("Usage: [ProgramName] [PathToPNGFile]");
+    Console.WriteLine("Usage: pngtoico path/to/png.png");
     return;
 }
 
@@ -40,7 +39,9 @@ try
     using FileStream stream = File.OpenRead(filePath);
     var image = new Bitmap(stream);
 
-    image.Save(outputFilePath, ImageFormat.Icon);
+    using FileStream output = File.OpenWrite(outputFilePath);
+    Icon.FromHandle(image.GetHicon()).Save(output);
+
     Console.WriteLine($"The ICO file has been saved as: {outputFilePath}");
 }
 catch (Exception e)
